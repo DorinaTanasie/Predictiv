@@ -15,6 +15,12 @@ namespace Predictiv
         public int[,] TempMatrix;
         public int[,] DecodedMatrix;
         public int predictorUsed = 0;
+        public byte[] bmpHeader;
+        
+        BitWriter bitWriter;
+        public string origImgPath;
+        public string CodedImgPath;
+
         public Root()
         {
             OrigMatrix = new int[256, 256];
@@ -22,6 +28,9 @@ namespace Predictiv
             ErPredMatrix = new int[256, 256];
             TempMatrix= new int[256, 256];
             DecodedMatrix = new int[256, 256];
+            bmpHeader = new byte[1078]; // folosit pentru decodare, reprezinta extensia pentru bmp
+            
+
         }
         public  void Init()
         {
@@ -127,7 +136,7 @@ namespace Predictiv
                     if (currentPixel < 0)
                         currentPixel = 0;
                     PredMatrix[i, j] = currentPixel;
-                    ErPredMatrix[i, j] = OrigMatrix[i, j] - PredMatrix[i, j];
+                    ErPredMatrix[i-1, j-1] = OrigMatrix[i-1, j-1] - PredMatrix[i-1, j-1];
 
                 }
             }
@@ -167,5 +176,29 @@ namespace Predictiv
             return histograma;
         }
 
+       
+        public void SaveEncodedFile()
+        {
+         
+            bitWriter = new BitWriter(CodedImgPath);
+
+
+            foreach (byte bit in bmpHeader)
+            {
+                bitWriter.Write_N_Bit(bit, 8);
+            }
+            bitWriter.Write_N_Bit(predictorUsed, 4);
+            for(int i = 0; i < 256; i++)
+            {
+                for(int j = 0; j < 256; j++)
+                {
+                    int value = ErPredMatrix[i, j];
+                    bitWriter.Write_N_Bit(value,9);
+                }
+            }
+            bitWriter.Write_N_Bit(0,7);
+            bitWriter.Dispose();
+
+        }
     }
 }

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.ImgOriginalImage = new System.Windows.Forms.PictureBox();
             this.ImgErrorMatrix = new System.Windows.Forms.PictureBox();
@@ -77,9 +78,9 @@
             // 
             // ImgErrorMatrix
             // 
-            this.ImgErrorMatrix.Location = new System.Drawing.Point(350, 0);
+            this.ImgErrorMatrix.Location = new System.Drawing.Point(330, 0);
             this.ImgErrorMatrix.Name = "ImgErrorMatrix";
-            this.ImgErrorMatrix.Size = new System.Drawing.Size(254, 250);
+            this.ImgErrorMatrix.Size = new System.Drawing.Size(274, 250);
             this.ImgErrorMatrix.TabIndex = 1;
             this.ImgErrorMatrix.TabStop = false;
             // 
@@ -259,7 +260,7 @@
             // 
             // numericUpDownK
             // 
-            this.numericUpDownK.Location = new System.Drawing.Point(138, 305);
+            this.numericUpDownK.Location = new System.Drawing.Point(150, 296);
             this.numericUpDownK.Name = "numericUpDownK";
             this.numericUpDownK.Size = new System.Drawing.Size(48, 20);
             this.numericUpDownK.TabIndex = 18;
@@ -327,7 +328,7 @@
             // lblK
             // 
             this.lblK.AutoSize = true;
-            this.lblK.Location = new System.Drawing.Point(115, 308);
+            this.lblK.Location = new System.Drawing.Point(127, 299);
             this.lblK.Name = "lblK";
             this.lblK.Size = new System.Drawing.Size(17, 13);
             this.lblK.TabIndex = 26;
@@ -339,18 +340,19 @@
             // 
             // chart1
             // 
-            this.chart1.BackColor = System.Drawing.Color.DimGray;
             chartArea4.Name = "ChartArea1";
             this.chart1.ChartAreas.Add(chartArea4);
-            this.chart1.Location = new System.Drawing.Point(474, 285);
-            this.chart1.Margin = new System.Windows.Forms.Padding(0);
+            legend4.Name = "Legend1";
+            this.chart1.Legends.Add(legend4);
+            this.chart1.Location = new System.Drawing.Point(545, 285);
             this.chart1.Name = "chart1";
             series4.ChartArea = "ChartArea1";
             series4.CustomProperties = "PointWidth=0.01";
-            series4.IsVisibleInLegend = false;
-            series4.Name = "Histogram";
+            series4.EmptyPointStyle.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.NotSet;
+            series4.Legend = "Legend1";
+            series4.Name = "Histograma";
             this.chart1.Series.Add(series4);
-            this.chart1.Size = new System.Drawing.Size(533, 300);
+            this.chart1.Size = new System.Drawing.Size(486, 300);
             this.chart1.TabIndex = 27;
             this.chart1.Text = "chart1";
             // 
