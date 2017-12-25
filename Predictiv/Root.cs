@@ -16,8 +16,14 @@ namespace Predictiv
         public int[,] DecodedMatrix;
         public int predictorUsed = 0;
         public byte[] bmpHeader;
-        
-        BitWriter bitWriter;
+        public int[,] DecErPredMatrix;
+       
+        // ------------------------Fields for decoding
+        public byte[] decBmpHeader;
+        public int DecPredictorUsed ;
+        public int[,] DecMatrix;
+
+        //  BitWriter bitWriter;
         public string origImgPath;
         public string CodedImgPath;
 
@@ -29,7 +35,11 @@ namespace Predictiv
             TempMatrix= new int[256, 256];
             DecodedMatrix = new int[256, 256];
             bmpHeader = new byte[1078]; // folosit pentru decodare, reprezinta extensia pentru bmp
-            
+                                        // ------------------------Fields for decoding
+            decBmpHeader = new byte[1078];
+            DecErPredMatrix= new int[256, 256];
+            DecMatrix= new int[256, 256];
+
 
         }
         public  void Init()
@@ -179,25 +189,126 @@ namespace Predictiv
        
         public void SaveEncodedFile()
         {
-         
-            bitWriter = new BitWriter(CodedImgPath);
-
-
+            BitsWriter.InitWriter(CodedImgPath);
             foreach (byte bit in bmpHeader)
             {
-                bitWriter.Write_N_Bit(bit, 8);
+               
+                BitsWriter.WriteNBiti(bit, 8);
             }
-            bitWriter.Write_N_Bit(predictorUsed, 4);
-            for(int i = 0; i < 256; i++)
+            BitsWriter.WriteNBiti(Convert.ToUInt32(predictorUsed),4);
+            
+            for (int i = 0; i < 256; i++)
             {
-                for(int j = 0; j < 256; j++)
+                for (int j = 0; j < 256; j++)
                 {
-                    int value = ErPredMatrix[i, j];
-                    bitWriter.Write_N_Bit(value,9);
+                    uint value = Convert.ToUInt32(ErPredMatrix[i, j] + 255);
+                    BitsWriter.WriteNBiti(Convert.ToUInt32(value), 9);
+                }
+             }
+                BitsWriter.WriteNBiti(0, 7);
+            BitsWriter.CloseWriter();
+
+        }
+        public void GetHeaderForDecOdedtiveMatrix()//in loc de header luam din matrice matricea originala primul rand si prima coloana 
+        {
+            for (int i = 1; i < 256; i++)
+            {
+                DecMatrix[0, i] = OrigMatrix[0, i - 1];
+                DecMatrix[i, 0] = OrigMatrix[i - 1, 0];
+                DecMatrix[0, 0] = 128;
+            }
+           
+        }
+        public void Decode()
+        {
+            int currentPixel = 0;
+            for (int i = 1; i < 256; i++)
+            {
+                for (int j = 1; j < 256; j++)
+                {
+                    if(i==0 && j == 0)
+                    {
+                        currentPixel = 128;
+                    }
+
+                    if (DecPredictorUsed == 0) //128
+                    {
+                        currentPixel = 128;
+                    }
+                    else
+                     if (DecPredictorUsed == 1) //A
+                    {
+                        currentPixel = OrigMatrix[i - 1, j];
+                    }
+                    else
+                     if (DecPredictorUsed == 2) //B
+                    {
+                        currentPixel = OrigMatrix[i, j - 1];
+                    }
+                    else
+                     if (DecPredictorUsed == 3)//C
+                    {
+                        currentPixel = OrigMatrix[i - 1, j - 1];
+                    }
+                    else
+                     if (DecPredictorUsed == 4) //A+B-C
+                    {
+                        currentPixel = OrigMatrix[i - 1, j] + OrigMatrix[i, j - 1] - OrigMatrix[i - 1, j - 1];
+                    }
+                    else
+                     if (DecPredictorUsed == 5) //A+(B-C)/2
+                    {
+                        currentPixel = OrigMatrix[i - 1, j] + (OrigMatrix[i, j - 1] - OrigMatrix[i - 1, j - 1]) / 2;
+                    }
+                    else
+                     if (DecPredictorUsed == 6) //B+(A-C)/2
+                    {
+                        currentPixel = OrigMatrix[i, j - 1] + (OrigMatrix[i - 1, j] - OrigMatrix[i - 1, j - 1]) / 2;
+                    }
+                    else
+                     if (DecPredictorUsed == 7)//(A+B)/2
+                    {
+                        currentPixel = (OrigMatrix[i - 1, j] + OrigMatrix[i, j - 1]) / 2;
+                    }
+                    else
+                     if (DecPredictorUsed == 8)//jpegLS
+                    {
+                        currentPixel = 0;
+                    }
+
+                    PredMatrix[i, j] = currentPixel;
+                    int decValue = DecErPredMatrix[i, j] + PredMatrix[i, j];
+                    if (decValue > 255)
+                        decValue = 255;
+                    if (decValue < 0)
+                        decValue = 0;
+
+                    DecMatrix[i, j] = decValue;
+
+
                 }
             }
-            bitWriter.Write_N_Bit(0,7);
-            bitWriter.Dispose();
+        }
+        public void SaveDecodedFile()
+        {
+            BitsWriter.InitWriter(CodedImgPath);
+            foreach (byte bit in decBmpHeader)
+            {
+
+                BitsWriter.WriteNBiti(bit, 8);
+            }
+           
+
+            for (int i = 0; i < 256; i++)
+            {
+                for (int j = 0; j < 256; j++)
+                {
+                    uint value = Convert.ToUInt32(ErPredMatrix[i, j] + 255);
+                    BitsWriter.WriteNBiti(Convert.ToUInt32(value), 9);
+                }
+            }
+            BitsWriter.WriteNBiti(0, 7);
+            BitsWriter.CloseWriter();
 
         }
     }

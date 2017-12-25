@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.ImgOriginalImage = new System.Windows.Forms.PictureBox();
             this.ImgErrorMatrix = new System.Windows.Forms.PictureBox();
             this.btn_LoadImage = new System.Windows.Forms.Button();
@@ -48,7 +48,6 @@
             this.radOriginal = new System.Windows.Forms.RadioButton();
             this.radErrorPrediction = new System.Windows.Forms.RadioButton();
             this.radDecoded = new System.Windows.Forms.RadioButton();
-            this.numericUpDownK = new System.Windows.Forms.NumericUpDown();
             this.btnErrorMatrix = new System.Windows.Forms.Button();
             this.ImgDecodedImage = new System.Windows.Forms.PictureBox();
             this.btnSaveDecoded = new System.Windows.Forms.Button();
@@ -62,7 +61,6 @@
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             ((System.ComponentModel.ISupportInitialize)(this.ImgOriginalImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ImgErrorMatrix)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownK)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ImgDecodedImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownScale)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
@@ -258,13 +256,6 @@
             this.radDecoded.UseVisualStyleBackColor = true;
             this.radDecoded.CheckedChanged += new System.EventHandler(this.radDecoded_CheckedChanged);
             // 
-            // numericUpDownK
-            // 
-            this.numericUpDownK.Location = new System.Drawing.Point(150, 296);
-            this.numericUpDownK.Name = "numericUpDownK";
-            this.numericUpDownK.Size = new System.Drawing.Size(48, 20);
-            this.numericUpDownK.TabIndex = 18;
-            // 
             // btnErrorMatrix
             // 
             this.btnErrorMatrix.Location = new System.Drawing.Point(383, 256);
@@ -290,6 +281,7 @@
             this.btnSaveDecoded.TabIndex = 23;
             this.btnSaveDecoded.Text = "Save Decoded";
             this.btnSaveDecoded.UseVisualStyleBackColor = true;
+            this.btnSaveDecoded.Click += new System.EventHandler(this.btnSaveDecoded_Click);
             // 
             // btnDecode
             // 
@@ -299,6 +291,7 @@
             this.btnDecode.TabIndex = 22;
             this.btnDecode.Text = "Decode";
             this.btnDecode.UseVisualStyleBackColor = true;
+            this.btnDecode.Click += new System.EventHandler(this.btnDecode_Click);
             // 
             // btnLoadEncoded
             // 
@@ -308,6 +301,7 @@
             this.btnLoadEncoded.TabIndex = 21;
             this.btnLoadEncoded.Text = "Load Encoded";
             this.btnLoadEncoded.UseVisualStyleBackColor = true;
+            this.btnLoadEncoded.Click += new System.EventHandler(this.btnLoadEncoded_Click);
             // 
             // numericUpDownScale
             // 
@@ -330,9 +324,8 @@
             this.lblK.AutoSize = true;
             this.lblK.Location = new System.Drawing.Point(127, 299);
             this.lblK.Name = "lblK";
-            this.lblK.Size = new System.Drawing.Size(17, 13);
+            this.lblK.Size = new System.Drawing.Size(0, 13);
             this.lblK.TabIndex = 26;
-            this.lblK.Text = "K:";
             // 
             // OFD
             // 
@@ -340,18 +333,18 @@
             // 
             // chart1
             // 
-            chartArea4.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea4);
-            legend4.Name = "Legend1";
-            this.chart1.Legends.Add(legend4);
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chart1.Legends.Add(legend1);
             this.chart1.Location = new System.Drawing.Point(545, 285);
             this.chart1.Name = "chart1";
-            series4.ChartArea = "ChartArea1";
-            series4.CustomProperties = "PointWidth=0.01";
-            series4.EmptyPointStyle.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.NotSet;
-            series4.Legend = "Legend1";
-            series4.Name = "Histograma";
-            this.chart1.Series.Add(series4);
+            series1.ChartArea = "ChartArea1";
+            series1.CustomProperties = "PointWidth=0.01";
+            series1.EmptyPointStyle.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.NotSet;
+            series1.Legend = "Legend1";
+            series1.Name = "Histograma";
+            this.chart1.Series.Add(series1);
             this.chart1.Size = new System.Drawing.Size(486, 300);
             this.chart1.TabIndex = 27;
             this.chart1.Text = "chart1";
@@ -370,7 +363,6 @@
             this.Controls.Add(this.btnLoadEncoded);
             this.Controls.Add(this.ImgDecodedImage);
             this.Controls.Add(this.btnErrorMatrix);
-            this.Controls.Add(this.numericUpDownK);
             this.Controls.Add(this.radDecoded);
             this.Controls.Add(this.radErrorPrediction);
             this.Controls.Add(this.radOriginal);
@@ -392,7 +384,6 @@
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.ImgOriginalImage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ImgErrorMatrix)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownK)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ImgDecodedImage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownScale)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
@@ -420,7 +411,6 @@
         private System.Windows.Forms.RadioButton radOriginal;
         private System.Windows.Forms.RadioButton radErrorPrediction;
         private System.Windows.Forms.RadioButton radDecoded;
-        private System.Windows.Forms.NumericUpDown numericUpDownK;
         private System.Windows.Forms.Button btnErrorMatrix;
         private System.Windows.Forms.PictureBox ImgDecodedImage;
         private System.Windows.Forms.Button btnSaveDecoded;
