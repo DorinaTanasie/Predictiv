@@ -28,6 +28,7 @@ namespace Predictiv
         BitReader bitReader;
 
         Bitmap Original;
+        int scale;
         private void SaveImage(SaveFileDialog sFD)
         {
           
@@ -86,6 +87,7 @@ namespace Predictiv
             ImgErrorMatrix.Image.RotateFlip(RotateFlipType.Rotate90FlipX);
             radOriginal.Enabled = true;
             radErrorPrediction.Enabled = true;
+            label1.Text = root.predictorUsed.ToString();
 
 
 
@@ -155,35 +157,39 @@ namespace Predictiv
 
         private void radOriginal_CheckedChanged(object sender, EventArgs e)
         {
-
+            chart1.Series[0].Points.Clear();
             int[] freq = new int[256];
             freq = root.GetFrequencies(root.OrigMatrix);
             for (int i = 0; i < freq.Length; i++)
             {
-                this.chart1.Series["Histograma"].Points.AddXY(i - 256, freq[i]);
+                // this.chart1.Series["Histograma"].Points.AddXY(i - 256, freq[i]);
+                chart1.Series[0].Points.AddXY(i - 256, freq[i]);
             }
         }
 
         private void radErrorPrediction_CheckedChanged(object sender, EventArgs e)
         {
-
+            chart1.Series[0].Points.Clear();
             int[] freq = new int[511];
             freq = root.GetFrequencies(root.ErPredMatrix);
             for (int i = 0; i < freq.Length; i++)
             {
 
-                this.chart1.Series["Histograma"].Points.AddXY(i - 256, freq[i]);
+                // this.chart1.Series["Histograma"].Points.AddXY(i - 256, freq[i]);
+                chart1.Series[0].Points.AddXY(i - 256, freq[i]);
             }
         }
 
         private void radDecoded_CheckedChanged(object sender, EventArgs e)
         {
+            chart1.Series[0].Points.Clear();
             int[] freq = new int[511];
             freq = root.GetFrequencies(root.DecMatrix);
             for (int i = 0; i < freq.Length; i++)
             {
 
-                this.chart1.Series["Histograma"].Points.AddXY(i - 256, freq[i]);
+                //   this.chart1.Series["Histograma"].Points.AddXY(i - 256, freq[i]);
+                chart1.Series[0].Points.AddXY(i - 256, freq[i]);
             }
         }
 
@@ -245,5 +251,22 @@ namespace Predictiv
 
                 }
             }
+
+        private void btnErrorMatrix_Click(object sender, EventArgs e)
+        {
+            scale = (int)numericUpDownScale.Value;
+            root.scale = scale;
+
+            root.Init();
+            root.OriginalImageMatrix(Original);
+            ImgErrorMatrix.Image = root.DrawImage(root.PictErrorMatrix);
+            ImgErrorMatrix.Image.RotateFlip(RotateFlipType.Rotate90FlipX);
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            root.predictorUsed = 9;
+            btn_Predict.Enabled = true;
+        }
     }
 }

@@ -13,10 +13,12 @@ namespace Predictiv
         public int[,] PredMatrix;
         public int[,] ErPredMatrix;
         public int[,] TempMatrix;
+        public int[,] PictErrorMatrix;
         public int[,] DecodedMatrix;
         public int predictorUsed = 0;
         public byte[] bmpHeader;
         public int[,] DecErPredMatrix;
+        public int scale;
        
         // ------------------------Fields for decoding
         public byte[] decBmpHeader;
@@ -30,6 +32,7 @@ namespace Predictiv
         public Root()
         {
             OrigMatrix = new int[256, 256];
+            PictErrorMatrix = new int[256, 256];
             PredMatrix = new int[256, 256];
             ErPredMatrix = new int[256, 256];
             TempMatrix= new int[256, 256];
@@ -52,7 +55,8 @@ namespace Predictiv
                     ErPredMatrix[i, j] = 0;
                     DecodedMatrix[i, j] = 0;
                     TempMatrix[i, j] = 0;
-                 
+                    PictErrorMatrix[i, j] = 0;
+
                 }
         }
         public void OriginalImageMatrix(Bitmap OriginalImage)
@@ -139,7 +143,12 @@ namespace Predictiv
                     {
                         currentPixel = 0;
                     }
-
+                    else
+                      if (predictorUsed ==9)//jpegLS
+                    {
+                        currentPixel = (OrigMatrix[i - 1, j]- OrigMatrix[i, j - 1])+(OrigMatrix[i - 1, j - 1]/2);
+                    }
+                    //(A-B)+C/2
 
                     if (currentPixel > 255)
                         currentPixel = 255;
@@ -147,6 +156,11 @@ namespace Predictiv
                         currentPixel = 0;
                     PredMatrix[i, j] = currentPixel;
                     ErPredMatrix[i-1, j-1] = OrigMatrix[i-1, j-1] - PredMatrix[i-1, j-1];
+
+                    PictErrorMatrix[i - 1, j - 1] = 128 + ErPredMatrix[i - 1, j - 1] * scale;
+                    if (PictErrorMatrix[i, j] > 255) PictErrorMatrix[i, j] = 255;
+                    if (PictErrorMatrix[i, j] < 0) PictErrorMatrix[i, j] = 0;
+
 
                 }
             }

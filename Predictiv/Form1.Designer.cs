@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.ImgOriginalImage = new System.Windows.Forms.PictureBox();
             this.ImgErrorMatrix = new System.Windows.Forms.PictureBox();
             this.btn_LoadImage = new System.Windows.Forms.Button();
@@ -59,6 +59,8 @@
             this.OFD = new System.Windows.Forms.OpenFileDialog();
             this.SFD = new System.Windows.Forms.SaveFileDialog();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.label1 = new System.Windows.Forms.Label();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.ImgOriginalImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ImgErrorMatrix)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ImgDecodedImage)).BeginInit();
@@ -264,6 +266,7 @@
             this.btnErrorMatrix.TabIndex = 19;
             this.btnErrorMatrix.Text = "Show Error Matrix";
             this.btnErrorMatrix.UseVisualStyleBackColor = true;
+            this.btnErrorMatrix.Click += new System.EventHandler(this.btnErrorMatrix_Click);
             // 
             // ImgDecodedImage
             // 
@@ -309,6 +312,11 @@
             this.numericUpDownScale.Name = "numericUpDownScale";
             this.numericUpDownScale.Size = new System.Drawing.Size(48, 20);
             this.numericUpDownScale.TabIndex = 24;
+            this.numericUpDownScale.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // lblScale
             // 
@@ -333,27 +341,50 @@
             // 
             // chart1
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chart1.Legends.Add(legend1);
+            chartArea3.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea3);
+            legend3.Name = "Legend1";
+            this.chart1.Legends.Add(legend3);
             this.chart1.Location = new System.Drawing.Point(545, 285);
             this.chart1.Name = "chart1";
-            series1.ChartArea = "ChartArea1";
-            series1.CustomProperties = "PointWidth=0.01";
-            series1.EmptyPointStyle.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.NotSet;
-            series1.Legend = "Legend1";
-            series1.Name = "Histograma";
-            this.chart1.Series.Add(series1);
+            series3.ChartArea = "ChartArea1";
+            series3.CustomProperties = "PointWidth=0.01";
+            series3.EmptyPointStyle.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.NotSet;
+            series3.Legend = "Legend1";
+            series3.Name = "Histograma";
+            this.chart1.Series.Add(series3);
             this.chart1.Size = new System.Drawing.Size(486, 300);
             this.chart1.TabIndex = 27;
             this.chart1.Text = "chart1";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(186, 379);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(74, 13);
+            this.label1.TabIndex = 28;
+            this.label1.Text = "PredictorUsed";
+            // 
+            // radioButton1
+            // 
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Location = new System.Drawing.Point(44, 492);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(72, 17);
+            this.radioButton1.TabIndex = 29;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Text = "(A-B)+C/2";
+            this.radioButton1.UseVisualStyleBackColor = true;
+            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1025, 582);
+            this.Controls.Add(this.radioButton1);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.chart1);
             this.Controls.Add(this.lblK);
             this.Controls.Add(this.lblScale);
@@ -422,6 +453,8 @@
         private System.Windows.Forms.OpenFileDialog OFD;
         private System.Windows.Forms.SaveFileDialog SFD;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.RadioButton radioButton1;
     }
 }
 
